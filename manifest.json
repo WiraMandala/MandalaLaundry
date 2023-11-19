@@ -5,18 +5,23 @@
   "icons": [
     {
       "src": "assets/image/MandalaLaundry.png",
-      "sizes": "512x130",
+      "sizes": "500x130",
       "type": "image/png"
     },
     {
       "src": "assets/image/MandalaLaundry1.png",
-      "sizes": "512x130",
+      "sizes": "500x130",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/image/favicon.png",
+      "sizes": "500x500",
       "type": "image/png"
     }
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#1F3641",
-  "background_color": "#ffffff",
+  "theme_color": "#c1efff",
+  "background_color": "#88ddff",
   "prefer_related_applications": false
 }

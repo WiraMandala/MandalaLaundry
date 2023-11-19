@@ -1,9 +1,18 @@
 const CACHE_NAME = 'SW-001';
 const toCache = [
-  "/",
-  "manifest.json",
-  "assets/js/register.js",
-  "assets/image/MandalaLaundry.png",
+  '/',
+  'manifest.json',
+  'assets/image/favicon.png',
+  'assets/css/style.css',
+  'assets/image/MandalaLaundry.png',
+  'assets/image/MandalaLaundry1.png',
+  'assets/image/notifikasi.png',
+  'assets/image/admin.png',
+  'assets/js/splashscreen.js',
+  'assets/js/notifikasi.js',
+  'assets/js/admin.js',
+  'assets/js/register.js',
+  'laundry.js',
 ];
 
 self.addEventListener('beforeinstallprompt', (e) => {

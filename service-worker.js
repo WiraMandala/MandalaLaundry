@@ -1,9 +1,17 @@
 const CACHE_NAME = 'SW-001';
 const toCache = [
-  '/',
   'manifest.json',
-  'assets/js/register.js',
+  'assets/image/favicon.png',
   'assets/image/MandalaLaundry.png',
+  'assets/image/MandalaLaundry1.png',
+  'assets/image/notifikasi.png',
+  'assets/image/admin.png',
+  'assets/css/style.css',
+  'assets/js/splashscreen.js',
+  'assets/js/notifikasi.js',
+  'assets/js/admin.js',
+  'assets/js/register.js',
+  'laundry.js',
 ];
 
 let deferredPrompt;

@@ -33,10 +33,21 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     fetch(event.request)
+      .then((response) => {
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      })
       .catch(() => {
-        return caches.open(CACHE_NAME)
-          .then((cache) => {
-            return cache.match(event.request);
+        return caches.match(event.request)
+          .then((cachedResponse) => {
+            if (cachedResponse) {
+              return cachedResponse;
+            } else {
+              return caches.match('/offline.html');
+            }
           });
       })
   );

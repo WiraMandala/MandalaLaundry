@@ -1,60 +1,62 @@
-const cacheName = 'app-cache-v1';
-const cacheFiles = [
+const CACHE_NAME = 'SW-001';
+const toCache = [
   "/",
   "manifest.json",
   "assets/js/register.js",
   "assets/image/MandalaLaundry.png",
-  // Tambahkan file lain yang ingin Anda cache di sini
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Lakukan tindakan yang diperlukan, seperti menampilkan tombol install, dll.
+  showInstallPromotion();
+});
+
+// Fungsi untuk menampilkan pesan instalasi
+function showInstallPromotion() {
+  // Tambahkan logika atau UI untuk menampilkan pesan instalasi di sini
+  console.log('Tampilkan pesan instalasi...');
+  // Contoh: Menampilkan tombol untuk menginstall aplikasi
+}
+
+self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(cacheName).then((cache) => {
-      return cache.addAll(cacheFiles);
-    })
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        return cache.addAll(toCache);
+      })
+      .then(self.skipWaiting())
   );
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((name) => {
-          if (name !== cacheName) {
-            return caches.delete(name);
-          }
-        })
-      );
-    })
-  );
-});
-
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) {
-        return response;
-      }
-
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
-
-        const clonedResponse = response.clone();
-
-        caches.open(cacheName).then((cache) => {
-          cache.put(event.request, clonedResponse);
-        });
-
-        return response;
-      });
-    }).catch(() => {
-      // Jika gagal melakukan fetch dan tidak ada cache, tampilkan halaman fallback
-      return caches.match('/offline.html');
-    })
+    fetch(event.request)
+      .catch(() => {
+        return caches.open(CACHE_NAME)
+          .then((cache) => {
+            return cache.match(event.request);
+          });
+      })
   );
 });
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys()
+      .then((keyList) => {
+        return Promise.all(keyList.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('[ServiceWorker] Hapus cache lama', key);
+            return caches.delete(key);
+          }
+        }));
+      })
+      .then(() => self.clients.claim())
+  );
+});
+
 
 
 

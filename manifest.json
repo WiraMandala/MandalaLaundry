@@ -3,20 +3,21 @@
   "short_name": "MandalaLaundry",
   "description": "Aplikasi MandalaLaundry",
   "icons": [
-    {
-      "src": "assets/image/MandalaLaundry.png",
-      "sizes": "512x130",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/image/MandalaLaundry1.png",
-      "sizes": "512x130",
-      "type": "image/png"
-    }
+  {
+  "src": "assets/image/MandalaLaundry.png", 
+  "sizes": "512x130",
+  "type": "image/png"
+  },
+  {
+  "src": "assets/image/MandalaLaundry1.png", 
+  "sizes": "512x130",
+  "type": "image/png"
+  }
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#1F3641",
-  "background_color": "#ffffff",
+  "theme_color": "#1F3641", 
+  "background_color": "#ffffff", 
   "prefer_related_applications": false
-}
+ }
+ 

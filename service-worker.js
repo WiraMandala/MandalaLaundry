@@ -1,53 +1,60 @@
-const CACHE_NAME = "SW-001";
-const toCache = [
+const cacheName = 'app-cache-v1';
+const cacheFiles = [
   "/",
   "manifest.json",
   "assets/js/register.js",
   "assets/image/MandalaLaundry.png",
+  // Tambahkan file lain yang ingin Anda cache di sini
 ];
 
-let deferredPrompt;
-
-self.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  // Tambahkan kode untuk menampilkan prompt instalasi di sini
-  showInstallPromotion();
-});
-
-self.addEventListener("install", function (event) {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then(function (cache) {
-        return cache.addAll(toCache);
-      })
-      .then(self.skipWaiting())
-  );
-});
-self.addEventListener("fetch", function (event) {
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.open(CACHE_NAME).then((cache) => {
-        return cache.match(event.request);
-      });
+    caches.open(cacheName).then((cache) => {
+      return cache.addAll(cacheFiles);
     })
   );
 });
-self.addEventListener("activate", function (event) {
+
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keyList) => {
-        return Promise.all(
-          keyList.map((key) => {
-            if (key !== CACHE_NAME) {
-              console.log("[ServiceWorker] Hapus cache lama", key);
-              return caches.delete(key);
-            }
-          })
-        );
-      })
-      .then(() => self.clients.claim())
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((name) => {
+          if (name !== cacheName) {
+            return caches.delete(name);
+          }
+        })
+      );
+    })
   );
 });
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      if (response) {
+        return response;
+      }
+
+      return fetch(event.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+
+        const clonedResponse = response.clone();
+
+        caches.open(cacheName).then((cache) => {
+          cache.put(event.request, clonedResponse);
+        });
+
+        return response;
+      });
+    }).catch(() => {
+      // Jika gagal melakukan fetch dan tidak ada cache, tampilkan halaman fallback
+      return caches.match('/offline.html');
+    })
+  );
+});
+
+
+

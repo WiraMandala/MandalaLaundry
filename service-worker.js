@@ -7,9 +7,7 @@ const toCache = [
 
 let deferredPrompt;
 
-// Definisikan fungsi showInstallPromotion di sini
 function showInstallPromotion() {
-  // Misalnya, tampilkan pesan atau tombol untuk menginstal aplikasi
   console.log('Tampilkan pesan untuk mengundang pengguna untuk menginstal aplikasi.');
 }
 

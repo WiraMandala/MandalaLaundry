@@ -3,7 +3,7 @@ function tambahLaundry() {
   const jenisInput = document.querySelector('input[name="jenis"]');
   const beratInput = document.querySelector('input[name="berat"]');
 
-  const namaPemesan = namaInput.value; // Retrieve the customer's name
+  const namaPemesan = namaInput.value; 
   const jenis = jenisInput.value;
   const berat = parseFloat(beratInput.value);
 
@@ -13,13 +13,13 @@ function tambahLaundry() {
     const table = document.getElementById("laundryList");
     const newRow = table.insertRow(table.rows.length);
 
-    const cellNama = newRow.insertCell(0); // Include a cell for the customer's name
+    const cellNama = newRow.insertCell(0); 
     const cellJenis = newRow.insertCell(1);
     const cellBerat = newRow.insertCell(2);
     const cellHarga = newRow.insertCell(3);
     const cellAksi = newRow.insertCell(4);
 
-    cellNama.innerHTML = namaPemesan; // Set the customer's name in the table
+    cellNama.innerHTML = namaPemesan; 
     cellJenis.innerHTML = jenis;
     cellBerat.innerHTML = berat + " Kg";
     cellHarga.innerHTML = "Rp." + harga;
@@ -32,13 +32,11 @@ function tambahLaundry() {
   } else {
     alert("Mohon isi nama pemesan, jenis, dan berat laundry yang valid.");
   }
-
-  namaInput.value = ""; // Reset the customer's name input
+  namaInput.value = ""; 
   jenisInput.value = "";
   beratInput.value = "";
 }
 
-// Fungsi untuk menghitung harga berdasarkan jenis dan berat
 function hitungHarga(jenis, berat) {
   let hargaPerKg = 0;
   switch (jenis.toLowerCase()) {
@@ -62,14 +60,12 @@ function hitungHarga(jenis, berat) {
   }
 
   let totalHarga = hargaPerKg * berat;
-  // Cek jika berat lebih dari 8 kg, berikan diskon 1 kg gratis
   if (berat > 8) {
-    totalHarga -= hargaPerKg; // Kurangi harga 1 kg dari total
+    totalHarga -= hargaPerKg; 
   }
-
   return totalHarga;
 }
-// Fungsi untuk menghitung total harga keseluruhan
+
 function hitungTotalHarga() {
   const table = document.getElementById("laundryList");
   let totalHarga = 0;
@@ -82,7 +78,6 @@ function hitungTotalHarga() {
   document.getElementById("totalHarga").textContent = "Total : Rp." + totalHarga;
 }
 
-// Fungsi untuk mengedit laundry dalam tabel
 function editLaundry(button) {
   const row = button.parentNode.parentNode;
   const nama = row.cells[0].innerHTML;
@@ -103,14 +98,12 @@ function editLaundry(button) {
   tambahButton.dataset.index = row.rowIndex;
 }
 
-// Fungsi untuk menghapus laundry dari tabel
 function hapusLaundry(button) {
   const row = button.parentNode.parentNode;
   row.parentNode.removeChild(row);
   hitungTotalHarga();
 }
 
-// Fungsi untuk melakukan update pada laundry dalam tabel
 function updateLaundry(button) {
   const namaInput = document.querySelector('input[name="namaPemesan"]');
   const jenisInput = document.querySelector('input[name="jenis"]');
@@ -141,7 +134,6 @@ function updateLaundry(button) {
   delete button.dataset.index;
 }
 
-// Fungsi untuk mereset input setelah proses tambah atau update
 function resetInputs() {
   const namaInput = document.querySelector('input[name="namaPemesan"]');
   const jenisInput = document.querySelector('input[name="jenis"]');

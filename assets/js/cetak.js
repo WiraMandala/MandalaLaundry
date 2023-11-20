@@ -1,9 +1,7 @@
-// Menambahkan event listener untuk ikon cetak
 document.querySelector('.cetak').addEventListener('click', function() {
     cetakDaftarLaundry();
   });
-  
-  // Fungsi untuk mencetak daftar laundry
+
   function cetakDaftarLaundry() {
     const table = document.getElementById("laundryList");
     let daftarLaundry = "Terima kasih sudah order di Mandala Laundry.\n\nDaftar Laundry :\n";
@@ -17,18 +15,15 @@ document.querySelector('.cetak').addEventListener('click', function() {
   
     const totalHarga = document.getElementById("totalHarga").textContent;
     daftarLaundry += `\n${totalHarga}\n`;
-  
-    // Memeriksa diskon
+      
     const diskon = cekDiskon();
     if (diskon > 0) {
       daftarLaundry += `\nNotes!!!\nDiskon 1 kg gratis untuk berat laundry di atas 8 kg.`;
     }
   
-    // Cetak daftar laundry menggunakan alert
     alert(daftarLaundry);
   }
   
-  // Fungsi untuk memeriksa diskon
   function cekDiskon() {
     const table = document.getElementById("laundryList");
     let totalBerat = 0;
@@ -38,7 +33,6 @@ document.querySelector('.cetak').addEventListener('click', function() {
       totalBerat += berat;
     }
   
-    // Cek jika total berat lebih dari 8 kg, berikan diskon 1 kg gratis
     if (totalBerat > 8) {
       return 1;
     } else {

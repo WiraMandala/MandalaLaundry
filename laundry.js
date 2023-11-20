@@ -1,35 +1,39 @@
-// Fungsi untuk menambahkan laundry ke dalam tabel
 function tambahLaundry() {
+  const namaInput = document.querySelector('input[name="namaPemesan"]');
   const jenisInput = document.querySelector('input[name="jenis"]');
   const beratInput = document.querySelector('input[name="berat"]');
 
+  const namaPemesan = namaInput.value; // Retrieve the customer's name
   const jenis = jenisInput.value;
   const berat = parseFloat(beratInput.value);
 
-  if (jenis !== "" && !isNaN(berat) && berat > 0) {
-    const harga = hitungHarga(jenis, berat); // Fungsi untuk menghitung harga
+  if (namaPemesan !== "" && jenis !== "" && !isNaN(berat) && berat > 0) {
+    const harga = hitungHarga(jenis, berat);
 
     const table = document.getElementById("laundryList");
     const newRow = table.insertRow(table.rows.length);
 
-    const cellJenis = newRow.insertCell(0);
-    const cellBerat = newRow.insertCell(1);
-    const cellHarga = newRow.insertCell(2);
-    const cellAksi = newRow.insertCell(3);
+    const cellNama = newRow.insertCell(0); // Include a cell for the customer's name
+    const cellJenis = newRow.insertCell(1);
+    const cellBerat = newRow.insertCell(2);
+    const cellHarga = newRow.insertCell(3);
+    const cellAksi = newRow.insertCell(4);
 
+    cellNama.innerHTML = namaPemesan; // Set the customer's name in the table
     cellJenis.innerHTML = jenis;
     cellBerat.innerHTML = berat + " Kg";
     cellHarga.innerHTML = "Rp." + harga;
     cellAksi.innerHTML =
       '<button onclick="editLaundry(this)">Edit</button> <button onclick="hapusLaundry(this)">Hapus</button>';
 
-    hitungTotalHarga(); // Fungsi untuk menghitung total harga keseluruhan
+    hitungTotalHarga();
     const laundryTable = document.querySelector('.laundryTable');
     laundryTable.style.display = 'table';
-} else {
-    alert("Mohon isi jenis dan berat laundry yang valid.");
-}
-  // Reset input setelah ditambahkan
+  } else {
+    alert("Mohon isi nama pemesan, jenis, dan berat laundry yang valid.");
+  }
+
+  namaInput.value = ""; // Reset the customer's name input
   jenisInput.value = "";
   beratInput.value = "";
 }
@@ -69,72 +73,80 @@ function hitungHarga(jenis, berat) {
 function hitungTotalHarga() {
   const table = document.getElementById("laundryList");
   let totalHarga = 0;
+
   for (let i = 0; i < table.rows.length; i++) {
-    totalHarga += parseInt(table.rows[i].cells[2].innerHTML.replace("Rp.", ""));
+    const harga = parseFloat(table.rows[i].cells[3].innerHTML.replace("Rp.", "").replace(",", ""));
+    totalHarga += harga;
   }
+
   document.getElementById("totalHarga").textContent = "Total : Rp." + totalHarga;
+}
+
+// Fungsi untuk mengedit laundry dalam tabel
+function editLaundry(button) {
+  const row = button.parentNode.parentNode;
+  const nama = row.cells[0].innerHTML;
+  const jenis = row.cells[1].innerHTML;
+  const berat = parseFloat(row.cells[2].innerHTML);
+
+  const namaInput = document.querySelector('input[name="namaPemesan"]');
+  const jenisInput = document.querySelector('input[name="jenis"]');
+  const beratInput = document.querySelector('input[name="berat"]');
+
+  namaInput.value = nama;
+  jenisInput.value = jenis;
+  beratInput.value = berat;
+
+  const tambahButton = document.querySelector(".btn-tambah");
+  tambahButton.innerHTML = "Update";
+  tambahButton.setAttribute("onclick", "updateLaundry(this)");
+  tambahButton.dataset.index = row.rowIndex;
 }
 
 // Fungsi untuk menghapus laundry dari tabel
 function hapusLaundry(button) {
   const row = button.parentNode.parentNode;
   row.parentNode.removeChild(row);
-  hitungTotalHarga(); // Hitung ulang total harga setelah menghapus
+  hitungTotalHarga();
 }
 
-// Fungsi untuk mengedit laundry dalam tabel
-function editLaundry(button) {
-  const row = button.parentNode.parentNode;
-  const jenis = row.cells[0].innerHTML;
-  const berat = parseFloat(row.cells[1].innerHTML);
-  const harga = parseFloat(
-    row.cells[2].innerHTML.replace("Rp.", "").replace(",", "")
-  );
-
-  const jenisInput = document.querySelector('input[name="jenis"]');
-  const beratInput = document.querySelector('input[name="berat"]');
-
-  jenisInput.value = jenis;
-  beratInput.value = berat;
-
-  const addButton = document.querySelector(".btn-tambah");
-  addButton.innerHTML = "Update"; // Mengubah teks tombol menjadi 'Update'
-  addButton.setAttribute("onclick", "updateLaundry(this)"); // Mengubah fungsi tombol menjadi 'updateLaundry'
-  addButton.dataset.index = row.rowIndex; // Menambahkan data-index untuk mengetahui indeks baris yang akan diupdate
-}
 // Fungsi untuk melakukan update pada laundry dalam tabel
 function updateLaundry(button) {
+  const namaInput = document.querySelector('input[name="namaPemesan"]');
   const jenisInput = document.querySelector('input[name="jenis"]');
   const beratInput = document.querySelector('input[name="berat"]');
+  const nama = namaInput.value;
   const jenis = jenisInput.value;
   const berat = parseFloat(beratInput.value);
 
-  if (jenis !== "" && !isNaN(berat) && berat > 0) {
-    const harga = hitungHarga(jenis, berat); // Fungsi untuk menghitung harga
+  if (nama !== "" && jenis !== "" && !isNaN(berat) && berat > 0) {
+    const harga = hitungHarga(jenis, berat);
     const table = document.getElementById("laundryList");
-    const index = button.dataset.index; // Mendapatkan indeks baris yang akan diupdate
-    const row = table.rows[index - 1]; // Mendapatkan baris yang akan diupdate
+    const index = button.dataset.index;
+    const row = table.rows[index - 1];
 
-    row.cells[0].innerHTML = jenis;
-    row.cells[1].innerHTML = berat + " Kg";
-    row.cells[2].innerHTML = "Rp." + harga;
+    row.cells[0].innerHTML = nama;
+    row.cells[1].innerHTML = jenis;
+    row.cells[2].innerHTML = berat + " Kg";
+    row.cells[3].innerHTML = "Rp." + harga;
 
-    hitungTotalHarga(); // Fungsi untuk menghitung total harga keseluruhan
+    hitungTotalHarga();
     resetInputs();
   } else {
-    alert("Mohon isi jenis dan berat laundry yang valid.");
+    alert("Mohon isi data dengan benar.");
   }
 
-  button.innerHTML = "Hitung"; // Mengembalikan teks tombol menjadi 'Hitung'
-  button.setAttribute("onclick", "tambahLaundry()"); // Mengembalikan fungsi tombol menjadi 'tambahLaundry'
-  delete button.dataset.index; // Menghapus data-index setelah proses update selesai
+  button.innerHTML = "Hitung";
+  button.setAttribute("onclick", "tambahLaundry()");
+  delete button.dataset.index;
 }
 
 // Fungsi untuk mereset input setelah proses tambah atau update
 function resetInputs() {
+  const namaInput = document.querySelector('input[name="namaPemesan"]');
   const jenisInput = document.querySelector('input[name="jenis"]');
   const beratInput = document.querySelector('input[name="berat"]');
+  namaInput.value = "";
   jenisInput.value = "";
   beratInput.value = "";
 }
-

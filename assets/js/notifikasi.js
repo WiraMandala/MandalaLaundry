@@ -20,8 +20,3 @@ document.querySelector(".notifikasi").addEventListener("click", function () {
   displayNotification();
 });
 
-window.addEventListener("load", function () {
-  setTimeout(function () {
-    alert("Ada pesan!! Klik icon lonceng.");
-  }, 2000);
-});

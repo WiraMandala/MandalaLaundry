@@ -1,22 +1,3 @@
-function displayNotification() {
-  if ("Notification" in window) {
-    if (Notification.permission === "granted") {
-      showNotification();
-    } else if (Notification.permission !== "denied") {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          showNotification();
-        }
-      });
-    }
-  }
-}
-
-function showNotification() {
-  alert("Diskon Tersedia!\nLaundry Melebihi 8Kg? Dapatkan Diskon 1Kg Gratis!");
-}
-
-document.querySelector(".notifikasi").addEventListener("click", function () {
-  displayNotification();
+document.querySelector(".notifikasi").addEventListener("click", function() {
+  alert("Selamat! Anda mendapatkan diskon.\nBerat laundry lebih dari 8kg, maka mendapatkan gratis 1kg!");
 });
-
